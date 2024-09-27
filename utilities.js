@@ -5,7 +5,7 @@ export async function deleteFile(filePath) {
     try {
         debug(`Deleting file: ${filePath}`);
         await fs.unlink(filePath);
-        debug(`File deleted successfully.`);
+        debug('File deleted successfully.');
     }
     catch {
         debug(`Error deleting file: ${filePath}`);

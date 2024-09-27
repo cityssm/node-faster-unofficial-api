@@ -15,7 +15,7 @@ export async function deleteFile(filePath: string): Promise<boolean> {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.unlink(filePath)
 
-    debug(`File deleted successfully.`)
+    debug('File deleted successfully.')
   } catch {
     debug(`Error deleting file: ${filePath}`)
     return false
