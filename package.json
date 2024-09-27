@@ -1,0 +1,39 @@
+{
+  "name": "@cityssm/faster-unofficial-api",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "An unofficial API for the FASTER Web fleet management system, relying on exported reports and complex parsers.",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=dev DEBUG=faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:* node --test",
+    "coverage": "cross-env NODE_ENV=dev DEBUG=faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cityssm/node-faster-unofficial-api.git"
+  },
+  "keywords": [
+    "faster-web",
+    "fmis",
+    "asset-management",
+    "fleet-management",
+    "puppeteer"
+  ],
+  "author": "The Corporation of the City of Sault Ste. Marie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cityssm/node-faster-unofficial-api/issues"
+  },
+  "homepage": "https://github.com/cityssm/node-faster-unofficial-api#readme",
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/node": "^22.7.4",
+    "eslint-config-cityssm": "^10.1.1",
+    "prettier-config-cityssm": "^1.0.0"
+  },
+  "dependencies": {
+    "@cityssm/faster-report-exporter": "^0.3.2",
+    "@cityssm/faster-report-parser": "^0.1.2",
+    "debug": "^4.3.7"
+  }
+}
