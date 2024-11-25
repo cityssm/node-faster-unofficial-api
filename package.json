@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@cityssm/faster-report-exporter": "^0.3.2",
-    "@cityssm/faster-report-parser": "^0.1.2",
+    "@cityssm/faster-report-parser": "^0.3.0",
     "debug": "^4.3.7"
   }
 }
