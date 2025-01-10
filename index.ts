@@ -149,7 +149,9 @@ export class FasterUnofficialAPI {
     } finally {
       try {
         await browser.close()
-      } catch {}
+      } catch {
+        // Ignore errors
+      }
     }
 
     return false

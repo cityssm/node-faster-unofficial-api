@@ -7,9 +7,21 @@ const debug = Debug('faster-unofficial-api:index');
 const integrationsTimeoutMillis = minutesToMillis(1);
 export class FasterUnofficialAPI {
     #fasterReportExporter;
+    /**
+     * Initialize the Faster Unofficial API
+     * @param fasterTenantOrBaseUrl - The subdomain of the FASTER Web URL before ".fasterwebcloud.com"
+     *                                or the full domain and path including "/FASTER"
+     * @param fasterUserName - The username to log in with
+     * @param fasterPassword - The password to log in with
+     * @param options - Additional options
+     */
     constructor(fasterTenantOrBaseUrl, fasterUserName, fasterPassword, options = {}) {
         this.#fasterReportExporter = new FasterReportExporter(fasterTenantOrBaseUrl, fasterUserName, fasterPassword, options);
     }
+    /**
+     * Retrieves a list of assets using the W114 report.
+     * @returns A list of assets
+     */
     async getAssets() {
         debug('Exporting asset list...');
         const assetReportPath = await this.#fasterReportExporter.exportAssetList('Excel');
@@ -20,6 +32,10 @@ export class FasterUnofficialAPI {
         await deleteFile(assetReportPath);
         return report.data;
     }
+    /**
+     * Retrieves a list of inventory items using the W200 report.
+     * @returns A list of inventory items, grouped by storeroom
+     */
     async getInventory() {
         debug('Exporting inventory report...');
         const inventoryReportPath = await this.#fasterReportExporter.exportInventory('Excel');
@@ -30,6 +46,11 @@ export class FasterUnofficialAPI {
         await deleteFile(inventoryReportPath);
         return report.data;
     }
+    /**
+     * Executes an integration by name.
+     * @param integrationName - The name of the integration to execute
+     * @returns `true` if the integration was executed, false if not
+     */
     async executeIntegration(integrationName) {
         const { browser, page } = await this.#fasterReportExporter._getLoggedInFasterPage();
         try {
@@ -39,7 +60,10 @@ export class FasterUnofficialAPI {
             await page.waitForNetworkIdle({
                 timeout: integrationsTimeoutMillis
             });
-            const integrationTableRowElements = await page.$$('#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr');
+            // Find the integration row
+            const integrationTableRowElements = await page.$$(
+            // eslint-disable-next-line no-secrets/no-secrets
+            '#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr');
             for (const integrationTableRowElement of integrationTableRowElements) {
                 const integrationNameElement = await integrationTableRowElement.$('td:nth-child(1) a');
                 if (integrationNameElement === null) {
@@ -62,7 +86,9 @@ export class FasterUnofficialAPI {
             try {
                 await browser.close();
             }
-            catch { }
+            catch {
+                // Ignore errors
+            }
         }
         return false;
     }
