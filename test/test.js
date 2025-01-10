@@ -1,7 +1,7 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import Debug from 'debug';
-import { FasterUnofficialAPI } from '../index.js';
+import { FasterUnofficialAPI, integrationNames } from '../index.js';
 import { fasterPassword, fasterTenant, fasterUserName, timeZone } from './config.js';
 const debug = Debug('faster-unofficial-api:test');
 await describe('node-faster-unofficial-api', async () => {
@@ -31,5 +31,9 @@ await describe('node-faster-unofficial-api', async () => {
             debug(error);
             assert.fail();
         }
+    });
+    await it('Executes an integration', async () => {
+        const success = await fasterApi.executeIntegration(integrationNames.inventoryImportUtility);
+        assert.ok(success);
     });
 });

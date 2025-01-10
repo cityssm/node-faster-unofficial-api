@@ -7,7 +7,7 @@ const debug = Debug('faster-unofficial-api:utilities')
 /**
  * Deletes a given file, catching any errors.
  * @param filePath - The path to the file to be deleted.
- * @returns True if the file was deleted.
+ * @returns `true` if the file was deleted.
  */
 export async function deleteFile(filePath: string): Promise<boolean> {
   try {

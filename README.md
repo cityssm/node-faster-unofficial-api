@@ -5,10 +5,10 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/0d91e0c07b4647f628e6/maintainability)](https://codeclimate.com/github/cityssm/node-faster-unofficial-api/maintainability)
 
 **An _unofficial_ API for the
-[FASTER Web fleet management system](https://fasterasset.com/products/fleet-management-software/),
-relying on exported reports and complex parsers.**
+[FASTER Web fleet management system](https://fasterasset.com/products/fleet-management-software/)
+relying on Puppeteer scripts, exported reports, and complex parsers.**
 
-This API ties together the following two projects:
+This API uses the following two projects:
 
 - [FASTER Web Report Exporter - @cityssm/faster-web-exporter](https://www.npmjs.com/package/@cityssm/faster-report-exporter)<br />
   On demand exports of selected reports from the FASTER Web Fleet Management System.
@@ -36,14 +36,13 @@ const fasterApi = new FasterUnofficialAPI(
 const assets = await fasterApi.getAssets()
 
 const inventory = await fasterApi.getInventory()
+
+const success =
+  await fasterApi.executeIntegration('Inventory Import Utility')
 ```
 
-## More Code for FASTER Web
+## Related Projects
 
-[FASTER Web Helper](https://github.com/cityssm/faster-web-helper)<br />
-A service to support integrations with the FASTER Web fleet management system.
+_Building an intergration with FASTER Web?_
 
-[Userscripts for FASTER Web](https://cityssm.github.io/userscripts/#userscripts-for-faster-web)<br />
-Fixes some of the common irks when using FASTER Web.
-Includes userscripts to enforce field validation, correct varying header heights,
-and offer autocomplete.
+[Have a look at the City's open source projects related to FASTER Web](https://github.com/cityssm/faster-web-projects).

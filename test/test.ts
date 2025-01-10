@@ -1,12 +1,9 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable security/detect-non-literal-fs-filename */
-
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 
 import Debug from 'debug'
 
-import { FasterUnofficialAPI } from '../index.js'
+import { FasterUnofficialAPI, integrationNames } from '../index.js'
 
 import {
   fasterPassword,
@@ -23,7 +20,6 @@ await describe('node-faster-unofficial-api', async () => {
     fasterUserName,
     fasterPassword,
     {
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
       timeoutMillis: 90_000,
       showBrowserWindow: true,
       timeZone
@@ -54,5 +50,11 @@ await describe('node-faster-unofficial-api', async () => {
       debug(error)
       assert.fail()
     }
+  })
+
+  await it('Executes an integration', async () => {
+    const success = await fasterApi.executeIntegration(integrationNames.inventoryImportUtility)
+
+    assert.ok(success)
   })
 })
