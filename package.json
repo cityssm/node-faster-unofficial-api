@@ -1,8 +1,8 @@
 {
   "name": "@cityssm/faster-unofficial-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
-  "description": "An unofficial API for the FASTER Web fleet management system, relying on exported reports and complex parsers.",
+  "description": "An unofficial API for the FASTER Web fleet management system relying on Puppeteer scripts, exported reports, and complex parsers.",
   "exports": "./index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=dev DEBUG=faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:* node --test",
