@@ -1,9 +1,10 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import Debug from 'debug';
-import { FasterUnofficialAPI, integrationNames } from '../index.js';
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE, FasterUnofficialAPI, integrationNames } from '../index.js';
 import { fasterPassword, fasterTenant, fasterUserName, timeZone } from './config.js';
-const debug = Debug('faster-unofficial-api:test');
+Debug.enable(DEBUG_ENABLE_NAMESPACES);
+const debug = Debug(`${DEBUG_NAMESPACE}:test`);
 await describe('node-faster-unofficial-api', async () => {
     const fasterApi = new FasterUnofficialAPI(fasterTenant, fasterUserName, fasterPassword, {
         timeoutMillis: 90_000,

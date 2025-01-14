@@ -5,8 +5,8 @@
   "description": "An unofficial API for the FASTER Web fleet management system relying on Puppeteer scripts, exported reports, and complex parsers.",
   "exports": "./index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=dev DEBUG=faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:* node --test",
-    "coverage": "cross-env NODE_ENV=dev DEBUG=faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:* c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
+    "test": "node --test",
+    "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
   },
   "repository": {
     "type": "git",

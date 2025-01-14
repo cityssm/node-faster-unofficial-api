@@ -1,5 +1,7 @@
 import { FasterReportExporter, type FasterReportExporterOptions } from '@cityssm/faster-report-exporter';
 import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
+export declare const DEBUG_NAMESPACE = "faster-unofficial-api";
+export declare const DEBUG_ENABLE_NAMESPACES = "faster-unofficial-api:*,faster-report-exporter:*,faster-report-parser:*";
 export type FasterUnofficialAPIOptions = Omit<FasterReportExporterOptions, 'downloadFolderPath'>;
 export declare class FasterUnofficialAPI {
     #private;

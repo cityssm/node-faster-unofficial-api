@@ -3,7 +3,9 @@ import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
 import { minutesToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import { deleteFile } from './utilities.js';
-const debug = Debug('faster-unofficial-api:index');
+export const DEBUG_NAMESPACE = 'faster-unofficial-api';
+export const DEBUG_ENABLE_NAMESPACES = `${DEBUG_NAMESPACE}:*,faster-report-exporter:*,faster-report-parser:*`;
+const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 const integrationsTimeoutMillis = minutesToMillis(1);
 export class FasterUnofficialAPI {
     #fasterReportExporter;
