@@ -3,12 +3,8 @@ import { describe, it } from 'node:test'
 
 import Debug from 'debug'
 
-import {
-  DEBUG_ENABLE_NAMESPACES,
-  DEBUG_NAMESPACE,
-  FasterUnofficialAPI,
-  integrationNames
-} from '../index.js'
+import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js'
+import { FasterUnofficialAPI, integrationNames } from '../index.js'
 
 import {
   fasterPassword,

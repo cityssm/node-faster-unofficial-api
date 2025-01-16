@@ -6,10 +6,8 @@ import { csvReports, xlsxReports } from '@cityssm/faster-report-parser'
 import { minutesToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 
+import { DEBUG_NAMESPACE } from './debug.config.js'
 import { deleteFile } from './utilities.js'
-
-export const DEBUG_NAMESPACE = 'faster-unofficial-api'
-export const DEBUG_ENABLE_NAMESPACES = `${DEBUG_NAMESPACE}:*,faster-report-exporter:*,faster-report-parser:*`
 
 const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
@@ -132,6 +130,8 @@ export class FasterUnofficialAPI {
         )
 
         if (integrationNameText === integrationName) {
+          debug(`Integration found: ${integrationName}`)
+
           const integrationActionLinkElements =
             await integrationTableRowElement.$$('td:nth-child(3) a')
 
@@ -142,6 +142,8 @@ export class FasterUnofficialAPI {
               )
 
             if (integrationActionLinkText === 'Execute') {
+              debug(`Executing integration: ${integrationName}`)
+
               await integrationActionLinkElement.click()
 
               return true

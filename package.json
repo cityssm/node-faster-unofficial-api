@@ -1,9 +1,12 @@
 {
   "name": "@cityssm/faster-unofficial-api",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "description": "An unofficial API for the FASTER Web fleet management system relying on Puppeteer scripts, exported reports, and complex parsers.",
-  "exports": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./debug": "./debug.config.js"
+  },
   "scripts": {
     "test": "node --test",
     "coverage": "c8 --reporter=lcov --reporter=text --reporter=text-summary node --test"
@@ -27,13 +30,13 @@
   "homepage": "https://github.com/cityssm/node-faster-unofficial-api#readme",
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.7",
     "eslint-config-cityssm": "^18.3.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/faster-report-exporter": "^0.4.1",
-    "@cityssm/faster-report-parser": "^0.3.0",
+    "@cityssm/faster-report-exporter": "^0.5.0",
+    "@cityssm/faster-report-parser": "^0.4.0",
     "@cityssm/to-millis": "^1.0.0",
     "debug": "^4.4.0"
   }
