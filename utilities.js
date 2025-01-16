@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import Debug from 'debug';
-const debug = Debug('faster-unofficial-api:utilities');
+import { DEBUG_NAMESPACE } from './debug.config.js';
+const debug = Debug(`${DEBUG_NAMESPACE}:utilities`);
 /**
  * Deletes a given file, catching any errors.
  * @param filePath - The path to the file to be deleted.
