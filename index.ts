@@ -89,6 +89,12 @@ export class FasterUnofficialAPI {
     return report.data
   }
 
+  /**
+   * Retrieves the message log using the W603 report.
+   * @param startDate - The start date of the message log to retrieve.
+   * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
+   * @returns The message log.
+   */
   async getMessageLog(
     startDate: Date,
     endDate?: Date

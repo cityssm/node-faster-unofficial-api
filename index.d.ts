@@ -22,6 +22,12 @@ export declare class FasterUnofficialAPI {
      * @returns A list of inventory items, grouped by storeroom
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
+    /**
+     * Retrieves the message log using the W603 report.
+     * @param startDate - The start date of the message log to retrieve.
+     * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
+     * @returns The message log.
+     */
     getMessageLog(startDate: Date, endDate?: Date): Promise<csvReports.W603ReportRow[]>;
     /**
      * Executes an integration by name.

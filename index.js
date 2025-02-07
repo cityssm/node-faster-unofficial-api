@@ -47,6 +47,12 @@ export class FasterUnofficialAPI {
         await deleteFile(inventoryReportPath);
         return report.data;
     }
+    /**
+     * Retrieves the message log using the W603 report.
+     * @param startDate - The start date of the message log to retrieve.
+     * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
+     * @returns The message log.
+     */
     async getMessageLog(startDate, endDate) {
         debug('Exporting message log...');
         const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(startDate, endDate ?? startDate, 'CSV');
