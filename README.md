@@ -37,8 +37,9 @@ const assets = await fasterApi.getAssets()
 
 const inventory = await fasterApi.getInventory()
 
-const success =
-  await fasterApi.executeIntegration('Inventory Import Utility')
+const messageLog = await fasterApi.getMessageLog(startDate, endDate)
+
+const success = await fasterApi.executeIntegration('Inventory Import Utility')
 ```
 
 ## Related Projects

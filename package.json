@@ -30,13 +30,13 @@
   "homepage": "https://github.com/cityssm/node-faster-unofficial-api#readme",
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.10.7",
-    "eslint-config-cityssm": "^18.3.0",
+    "@types/node": "^22.13.1",
+    "eslint-config-cityssm": "^19.0.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/faster-report-exporter": "^0.5.0",
-    "@cityssm/faster-report-parser": "^0.4.0",
+    "@cityssm/faster-report-exporter": "^0.6.0",
+    "@cityssm/faster-report-parser": "^0.4.1",
     "@cityssm/to-millis": "^1.0.0",
     "debug": "^4.4.0"
   }

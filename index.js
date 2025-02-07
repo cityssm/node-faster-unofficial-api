@@ -14,7 +14,7 @@ export class FasterUnofficialAPI {
      *                                or the full domain and path including "/FASTER"
      * @param fasterUserName - The username to log in with
      * @param fasterPassword - The password to log in with
-     * @param options - Additional options
+     * @param options - Options
      */
     constructor(fasterTenantOrBaseUrl, fasterUserName, fasterPassword, options = {}) {
         this.#fasterReportExporter = new FasterReportExporter(fasterTenantOrBaseUrl, fasterUserName, fasterPassword, options);
@@ -47,10 +47,20 @@ export class FasterUnofficialAPI {
         await deleteFile(inventoryReportPath);
         return report.data;
     }
+    async getMessageLog(startDate, endDate) {
+        debug('Exporting message log...');
+        const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(startDate, endDate ?? startDate, 'CSV');
+        debug(`Message log exported: ${messageLogPath}`);
+        debug('Parsing message log...');
+        const report = await csvReports.parseFasterCsvReport(messageLogPath, csvReports.fasterCsvReportOptions.w603);
+        debug(`Message log parsed with ${report.data.length} message(s).`);
+        await deleteFile(messageLogPath);
+        return report.data;
+    }
     /**
      * Executes an integration by name.
-     * @param integrationName - The name of the integration to execute
-     * @returns `true` if the integration was executed, false if not
+     * @param integrationName - The name of the integration to execute.
+     * @returns `true` if the integration was executed, `false` if not.
      */
     async executeIntegration(integrationName) {
         const { browser, page } = await this.#fasterReportExporter._getLoggedInFasterPage();

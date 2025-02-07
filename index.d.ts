@@ -9,7 +9,7 @@ export declare class FasterUnofficialAPI {
      *                                or the full domain and path including "/FASTER"
      * @param fasterUserName - The username to log in with
      * @param fasterPassword - The password to log in with
-     * @param options - Additional options
+     * @param options - Options
      */
     constructor(fasterTenantOrBaseUrl: string, fasterUserName: string, fasterPassword: string, options?: Partial<FasterUnofficialAPIOptions>);
     /**
@@ -22,10 +22,11 @@ export declare class FasterUnofficialAPI {
      * @returns A list of inventory items, grouped by storeroom
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
+    getMessageLog(startDate: Date, endDate?: Date): Promise<csvReports.W603ReportRow[]>;
     /**
      * Executes an integration by name.
-     * @param integrationName - The name of the integration to execute
-     * @returns `true` if the integration was executed, false if not
+     * @param integrationName - The name of the integration to execute.
+     * @returns `true` if the integration was executed, `false` if not.
      */
     executeIntegration(integrationName: string): Promise<boolean>;
 }

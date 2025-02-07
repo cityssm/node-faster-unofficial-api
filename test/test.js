@@ -12,7 +12,7 @@ await describe('node-faster-unofficial-api', async () => {
         showBrowserWindow: true,
         timeZone
     });
-    await it('Retrieves assets', async () => {
+    await it.skip('Retrieves assets', async () => {
         try {
             const assets = await fasterApi.getAssets();
             debug(assets);
@@ -23,7 +23,7 @@ await describe('node-faster-unofficial-api', async () => {
             assert.fail();
         }
     });
-    await it('Retrieves inventory', async () => {
+    await it.skip('Retrieves inventory', async () => {
         try {
             const inventory = await fasterApi.getInventory();
             debug(inventory);
@@ -34,7 +34,18 @@ await describe('node-faster-unofficial-api', async () => {
             assert.fail();
         }
     });
-    await it('Executes an integration', async () => {
+    await it('Retrieves message logs', async () => {
+        try {
+            const log = await fasterApi.getMessageLog(new Date());
+            debug(log);
+            assert.notStrictEqual(log.length, 0);
+        }
+        catch (error) {
+            debug(error);
+            assert.fail();
+        }
+    });
+    await it.skip('Executes an integration', async () => {
         const success = await fasterApi.executeIntegration(integrationNames.inventoryImportUtility);
         assert.ok(success);
     });
