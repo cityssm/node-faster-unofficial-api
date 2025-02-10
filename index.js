@@ -95,6 +95,9 @@ export class FasterUnofficialAPI {
                         if (integrationActionLinkText === 'Execute') {
                             debug(`Executing integration: ${integrationName}`);
                             await integrationActionLinkElement.click();
+                            await page.waitForNetworkIdle({
+                                timeout: integrationsTimeoutMillis
+                            });
                             return true;
                         }
                     }

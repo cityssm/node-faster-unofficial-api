@@ -180,6 +180,10 @@ export class FasterUnofficialAPI {
 
               await integrationActionLinkElement.click()
 
+              await page.waitForNetworkIdle({
+                timeout: integrationsTimeoutMillis
+              })
+
               return true
             }
           }
