@@ -8,13 +8,17 @@
 [FASTER Web fleet management system](https://fasterasset.com/products/fleet-management-software/)
 relying on Puppeteer scripts, exported reports, and complex parsers.**
 
+This API prioritizes functions that are not available through FASTER-supported methods.
+
 This API uses the following two projects:
 
 - [FASTER Web Report Exporter - @cityssm/faster-web-exporter](https://www.npmjs.com/package/@cityssm/faster-report-exporter)<br />
   On demand exports of selected reports from the FASTER Web Fleet Management System.
 
-- [Faster Web Report Parser - @cityssm/faster-web-parser](https://www.npmjs.com/package/@cityssm/faster-report-parser)<br />
+- [FASTER Web Report Parser - @cityssm/faster-web-parser](https://www.npmjs.com/package/@cityssm/faster-report-parser)<br />
   Parses select Excel and CSV reports from the FASTER Web Fleet Management System into usable data objects.
+
+_This unofficial API is in no way affiliated with or endorsed by FASTER Asset Solutions or Transit Technologies._
 
 ## Installation
 
@@ -23,6 +27,11 @@ npm install @cityssm/faster-unofficial-api
 ```
 
 ## Usage
+
+⭐ This package requires a FASTER Web user name and password able to log into
+the FASTER Web application with permission to perform the function you need.
+For example, to execute an integration on demand using the `executeIntegration()` function,
+the provided user needs to have permission to do so.
 
 ```javascript
 import { FasterUnofficialAPI } from '@cityssm/faster-unofficial-api'
@@ -37,9 +46,20 @@ const assets = await fasterApi.getAssets()
 
 const inventory = await fasterApi.getInventory()
 
+const itemUpdatedSuccessfully = await fasterApi.updateInventoryItem(
+  itemNumber,
+  storeroom,
+  {
+    itemName: 'New Item Name',
+    itemDescription: 'Updated Item Description'
+  }
+)
+
 const messageLog = await fasterApi.getMessageLog(startDate, endDate)
 
-const success = await fasterApi.executeIntegration('Inventory Import Utility')
+const executedSuccessfully = await fasterApi.executeIntegration(
+  'Inventory Import Utility'
+)
 ```
 
 ## Related Projects

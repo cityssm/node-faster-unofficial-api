@@ -129,7 +129,7 @@ export class FasterUnofficialAPI {
         timeout: timeoutMillis
       })
 
-      // No results or multiple results
+      // No results or more than one result.
       // Not supported
       if (
         page
