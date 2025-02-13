@@ -23,6 +23,19 @@ export declare class FasterUnofficialAPI {
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
     /**
+     * Updates an inventory item.
+     * @param itemNumber - The item number of the inventory item to update.
+     * @param storeroom - The storeroom of the inventory item to update.
+     * @param fieldsToUpdate - The fields to update.
+     * @param fieldsToUpdate.itemName - The updated item name.
+     * @param fieldsToUpdate.itemDescription - The updated item description.
+     * @returns `true` if the inventory item was updated, `false` if not.
+     */
+    updateInventoryItem(itemNumber: string, storeroom: string, fieldsToUpdate: {
+        itemName?: string;
+        itemDescription?: string;
+    }): Promise<boolean>;
+    /**
      * Retrieves the message log using the W603 report.
      * @param startDate - The start date of the message log to retrieve.
      * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.

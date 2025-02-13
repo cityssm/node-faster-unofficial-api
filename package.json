@@ -35,7 +35,7 @@
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/faster-report-exporter": "^0.6.0",
+    "@cityssm/faster-report-exporter": "^0.6.1",
     "@cityssm/faster-report-parser": "^0.5.0",
     "@cityssm/to-millis": "^1.0.0",
     "debug": "^4.4.0"

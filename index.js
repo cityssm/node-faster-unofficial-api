@@ -5,7 +5,7 @@ import Debug from 'debug';
 import { DEBUG_NAMESPACE } from './debug.config.js';
 import { deleteFile } from './utilities.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
-const integrationsTimeoutMillis = minutesToMillis(1);
+const timeoutMillis = minutesToMillis(1);
 export class FasterUnofficialAPI {
     #fasterReportExporter;
     /**
@@ -48,6 +48,97 @@ export class FasterUnofficialAPI {
         return report.data;
     }
     /**
+     * Updates an inventory item.
+     * @param itemNumber - The item number of the inventory item to update.
+     * @param storeroom - The storeroom of the inventory item to update.
+     * @param fieldsToUpdate - The fields to update.
+     * @param fieldsToUpdate.itemName - The updated item name.
+     * @param fieldsToUpdate.itemDescription - The updated item description.
+     * @returns `true` if the inventory item was updated, `false` if not.
+     */
+    async updateInventoryItem(itemNumber, storeroom, fieldsToUpdate) {
+        if (Object.keys(fieldsToUpdate).length === 0) {
+            debug('No fields to update.');
+            return false;
+        }
+        const { browser, page } = await this.#fasterReportExporter._getLoggedInFasterPage();
+        try {
+            await page.goto(this.#fasterReportExporter.fasterUrlBuilder.inventorySearchUrl(itemNumber, true), {
+                timeout: timeoutMillis
+            });
+            await page.waitForNetworkIdle({
+                timeout: timeoutMillis
+            });
+            // No results or multiple results
+            // Not supported
+            if (page
+                .url()
+                .startsWith(this.#fasterReportExporter.fasterUrlBuilder.inventorySearchUrl())) {
+                debug('Either no results or multiple results found. Not supported.');
+                return false;
+            }
+            /*
+             * Verify the storeroom
+             */
+            const headingText = (await page.$eval('#ctl00_ContentPlaceHolder_Content_DetailMenu_PartHeaderLabel', (heading) => heading.textContent)) ?? '';
+            if (!headingText.trim().endsWith(`[${storeroom}]`)) {
+                debug('Item not found in the specified storeroom.');
+                return false;
+            }
+            /*
+             * Get the item id
+             */
+            const pageUrlString = page.url();
+            const pageUrl = new URL(pageUrlString);
+            const itemId = pageUrl.searchParams.get('id') ?? '';
+            if (itemId === '') {
+                debug('Item ID not found.');
+                return false;
+            }
+            /*
+             * Open the item identification update form
+             */
+            const formUrl = `${this.#fasterReportExporter.fasterUrlBuilder.baseUrl}/Domains/Parts/PartDetail/IdentificationEdit.aspx?id=${itemId}`;
+            await page.goto(formUrl, {
+                timeout: timeoutMillis
+            });
+            await page.waitForNetworkIdle({
+                timeout: timeoutMillis
+            });
+            /*
+             * Update the fields
+             */
+            if (fieldsToUpdate.itemName !== undefined) {
+                await page.$eval('#PartNameRadTextBox', (itemNameTextBox, itemName) => {
+                    itemNameTextBox.value = itemName;
+                }, fieldsToUpdate.itemName);
+            }
+            if (fieldsToUpdate.itemDescription !== undefined) {
+                await page.$eval('#PartDescriptionRadTextBox', (itemDescriptionTextBox, itemDescription) => {
+                    itemDescriptionTextBox.value = itemDescription;
+                }, fieldsToUpdate.itemDescription);
+            }
+            /*
+             * Save the form
+             */
+            await page.$eval('#SaveTopButton', (saveButton) => {
+                saveButton.click();
+            });
+            await page.waitForNetworkIdle({
+                timeout: timeoutMillis
+            });
+            return true;
+        }
+        finally {
+            try {
+                await browser.close();
+            }
+            catch {
+                // Ignore errors
+            }
+        }
+    }
+    /**
      * Retrieves the message log using the W603 report.
      * @param startDate - The start date of the message log to retrieve.
      * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
@@ -72,10 +163,10 @@ export class FasterUnofficialAPI {
         const { browser, page } = await this.#fasterReportExporter._getLoggedInFasterPage();
         try {
             await page.goto(this.#fasterReportExporter.fasterUrlBuilder.integrationsUrl, {
-                timeout: integrationsTimeoutMillis
+                timeout: timeoutMillis
             });
             await page.waitForNetworkIdle({
-                timeout: integrationsTimeoutMillis
+                timeout: timeoutMillis
             });
             // Find the integration row
             const integrationTableRowElements = await page.$$(
@@ -96,7 +187,7 @@ export class FasterUnofficialAPI {
                             debug(`Executing integration: ${integrationName}`);
                             await integrationActionLinkElement.click();
                             await page.waitForNetworkIdle({
-                                timeout: integrationsTimeoutMillis
+                                timeout: timeoutMillis
                             });
                             return true;
                         }

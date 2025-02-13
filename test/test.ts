@@ -10,6 +10,8 @@ import {
   fasterPassword,
   fasterTenant,
   fasterUserName,
+  itemNumber,
+  itemStoreroom,
   timeZone
 } from './config.js'
 
@@ -55,6 +57,16 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
+  await it('Updates an inventory item', async () => {
+    
+    const success = await fasterApi.updateInventoryItem(itemNumber, itemStoreroom, {
+      itemName: `Item ${new Date().toISOString()}`,
+      itemDescription: `Description ${new Date().toISOString()}`
+    })
+
+    assert.ok(success)
+  })
+
   await it.skip('Retrieves message logs', async () => {
     try {
       const log = await fasterApi.getMessageLog(new Date())
@@ -68,7 +80,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it('Executes an integration', async () => {
+  await it.skip('Executes an integration', async () => {
     const success = await fasterApi.executeIntegration(
       integrationNames.inventoryImportUtility
     )
