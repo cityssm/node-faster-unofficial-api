@@ -30,7 +30,7 @@
   "homepage": "https://github.com/cityssm/node-faster-unofficial-api#readme",
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^22.13.2",
+    "@types/node": "^22.13.4",
     "eslint-config-cityssm": "^19.0.0",
     "prettier-config-cityssm": "^1.0.0"
   },
