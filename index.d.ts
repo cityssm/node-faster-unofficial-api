@@ -29,11 +29,15 @@ export declare class FasterUnofficialAPI {
      * @param fieldsToUpdate - The fields to update.
      * @param fieldsToUpdate.itemName - The updated item name.
      * @param fieldsToUpdate.itemDescription - The updated item description.
+     * @param fieldsToUpdate.binLocation - The updated bin location.
+     * @param fieldsToUpdate.alternateLocation - The updated alternate location.
      * @returns `true` if the inventory item was updated, `false` if not.
      */
     updateInventoryItem(itemNumber: string, storeroom: string, fieldsToUpdate: {
         itemName?: string;
         itemDescription?: string;
+        binLocation?: string;
+        alternateLocation?: string;
     }): Promise<boolean>;
     /**
      * Retrieves the message log using the W603 report.

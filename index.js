@@ -54,6 +54,8 @@ export class FasterUnofficialAPI {
      * @param fieldsToUpdate - The fields to update.
      * @param fieldsToUpdate.itemName - The updated item name.
      * @param fieldsToUpdate.itemDescription - The updated item description.
+     * @param fieldsToUpdate.binLocation - The updated bin location.
+     * @param fieldsToUpdate.alternateLocation - The updated alternate location.
      * @returns `true` if the inventory item was updated, `false` if not.
      */
     async updateInventoryItem(itemNumber, storeroom, fieldsToUpdate) {
@@ -117,6 +119,16 @@ export class FasterUnofficialAPI {
                 await page.$eval('#PartDescriptionRadTextBox', (itemDescriptionTextBox, itemDescription) => {
                     itemDescriptionTextBox.value = itemDescription;
                 }, fieldsToUpdate.itemDescription);
+            }
+            if (fieldsToUpdate.binLocation !== undefined) {
+                await page.$eval('#BinLocationRadTextBox', (binLocationTextBox, binLocation) => {
+                    binLocationTextBox.value = binLocation;
+                }, fieldsToUpdate.binLocation);
+            }
+            if (fieldsToUpdate.alternateLocation !== undefined) {
+                await page.$eval('#AlternateLocationRadTextBox', (alternateLocationTextBox, alternateLocation) => {
+                    alternateLocationTextBox.value = alternateLocation;
+                }, fieldsToUpdate.alternateLocation);
             }
             /*
              * Save the form

@@ -61,7 +61,9 @@ await describe('node-faster-unofficial-api', async () => {
     
     const success = await fasterApi.updateInventoryItem(itemNumber, itemStoreroom, {
       itemName: `Item ${new Date().toISOString()}`,
-      itemDescription: `Description ${new Date().toISOString()}`
+      itemDescription: `Description ${new Date().toISOString()}`,
+      binLocation: `BIN ${Date.now() % 10}`,
+      alternateLocation: `ALT ${Date.now() % 10}`,
     })
 
     assert.ok(success)
