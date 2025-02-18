@@ -7,7 +7,7 @@ import { minutesToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 
 import { DEBUG_NAMESPACE } from './debug.config.js'
-import { deleteFile } from './utilities.js'
+import { delay, deleteFile } from './utilities.js'
 
 const debug = Debug(`${DEBUG_NAMESPACE}:index`)
 
@@ -240,6 +240,8 @@ export class FasterUnofficialAPI {
         saveButton.click()
       })
 
+      await delay()
+
       await page.waitForNetworkIdle({
         timeout: timeoutMillis
       })
@@ -344,6 +346,8 @@ export class FasterUnofficialAPI {
               debug(`Executing integration: ${integrationName}`)
 
               await integrationActionLinkElement.click()
+
+              await delay()
 
               await page.waitForNetworkIdle({
                 timeout: timeoutMillis

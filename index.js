@@ -3,7 +3,7 @@ import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
 import { minutesToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from './debug.config.js';
-import { deleteFile } from './utilities.js';
+import { delay, deleteFile } from './utilities.js';
 const debug = Debug(`${DEBUG_NAMESPACE}:index`);
 const timeoutMillis = minutesToMillis(1);
 export class FasterUnofficialAPI {
@@ -136,6 +136,7 @@ export class FasterUnofficialAPI {
             await page.$eval('#SaveTopButton', (saveButton) => {
                 saveButton.click();
             });
+            await delay();
             await page.waitForNetworkIdle({
                 timeout: timeoutMillis
             });
@@ -198,6 +199,7 @@ export class FasterUnofficialAPI {
                         if (integrationActionLinkText === 'Execute') {
                             debug(`Executing integration: ${integrationName}`);
                             await integrationActionLinkElement.click();
+                            await delay();
                             await page.waitForNetworkIdle({
                                 timeout: timeoutMillis
                             });
