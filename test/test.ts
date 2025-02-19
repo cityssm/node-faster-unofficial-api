@@ -1,6 +1,7 @@
 import assert from 'node:assert'
 import { describe, it } from 'node:test'
 
+import inventoryItemConstants from '@cityssm/faster-constants/inventory/items'
 import Debug from 'debug'
 
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js'
@@ -58,13 +59,25 @@ await describe('node-faster-unofficial-api', async () => {
   })
 
   await it('Updates an inventory item', async () => {
-    
-    const success = await fasterApi.updateInventoryItem(itemNumber, itemStoreroom, {
-      itemName: `Item ${new Date().toISOString()}`,
-      itemDescription: `Description ${new Date().toISOString()}`,
-      binLocation: `BIN ${Date.now() % 10}`,
-      alternateLocation: `ALT ${Date.now() % 10}`,
-    })
+    const success = await fasterApi.updateInventoryItem(
+      itemNumber,
+      itemStoreroom,
+      {
+        itemName: `Item ${new Date().toISOString()}`.padEnd(
+          inventoryItemConstants.itemName.maxLength + 1,
+          ' '
+        ),
+        itemDescription: `Description ${new Date().toISOString()}`,
+        binLocation: `BIN ${Date.now() % 10}`.padEnd(
+          inventoryItemConstants.binLocation.maxLength + 1,
+          ' '
+        ),
+        alternateLocation: `ALT ${Date.now() % 10}`.padEnd(
+          inventoryItemConstants.alternateLocation.maxLength + 1,
+          ' '
+        )
+      }
+    )
 
     assert.ok(success)
   })

@@ -31,11 +31,11 @@
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/node": "^22.13.4",
-    "eslint-config-cityssm": "^19.0.0",
+    "eslint-config-cityssm": "^20.0.0",
     "prettier-config-cityssm": "^1.0.0"
   },
   "dependencies": {
-    "@cityssm/faster-constants": "^0.1.0",
+    "@cityssm/faster-constants": "^0.2.0",
     "@cityssm/faster-report-exporter": "^0.6.1",
     "@cityssm/faster-report-parser": "^0.5.0",
     "@cityssm/to-millis": "^1.0.0",

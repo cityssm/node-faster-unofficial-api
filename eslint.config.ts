@@ -1,3 +1,4 @@
+import eslintConstants from '@cityssm/faster-constants/other/eslint'
 import eslintConfigCityssm, {
   type Config,
   cspellWords,
@@ -10,7 +11,7 @@ const config = tseslint.config(...eslintConfigCityssm, {
       'warn',
       {
         cspell: {
-          words: [...cspellWords, 'fasterwebcloud']
+          words: [...cspellWords, ...eslintConstants.cspellWords]
         }
       }
     ],
