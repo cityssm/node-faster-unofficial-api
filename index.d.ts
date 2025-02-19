@@ -24,6 +24,7 @@ export declare class FasterUnofficialAPI {
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
     /**
      * Updates an inventory item, truncating fields where necessary.
+     * @see {@link https://github.com/cityssm/node-faster-constants/blob/main/inventory/items.ts|@cityssm/faster-constants - Inventory Item Constants} for truncate lengths.
      * @param itemNumber - The item number of the inventory item to update.
      * @param storeroom - The storeroom of the inventory item to update.
      * @param fieldsToUpdate - The fields to update.

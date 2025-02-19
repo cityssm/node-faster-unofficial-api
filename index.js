@@ -50,6 +50,7 @@ export class FasterUnofficialAPI {
     }
     /**
      * Updates an inventory item, truncating fields where necessary.
+     * @see {@link https://github.com/cityssm/node-faster-constants/blob/main/inventory/items.ts|@cityssm/faster-constants - Inventory Item Constants} for truncate lengths.
      * @param itemNumber - The item number of the inventory item to update.
      * @param storeroom - The storeroom of the inventory item to update.
      * @param fieldsToUpdate - The fields to update.
@@ -124,7 +125,7 @@ export class FasterUnofficialAPI {
              * Update the fields
              */
             if (fieldsToUpdate.itemName !== undefined) {
-                await page.$eval('#PartNameRadTextBox', (itemNameTextBox, itemName) => {
+                await page.$eval(`#${fasterInventoryItemConstants.itemName.inputId}`, (itemNameTextBox, itemName) => {
                     itemNameTextBox.value = itemName;
                 }, fieldsToUpdate.itemName.slice(0, fasterInventoryItemConstants.itemName.maxLength));
             }
@@ -134,12 +135,12 @@ export class FasterUnofficialAPI {
                 }, fieldsToUpdate.itemDescription);
             }
             if (fieldsToUpdate.binLocation !== undefined) {
-                await page.$eval('#BinLocationRadTextBox', (binLocationTextBox, binLocation) => {
+                await page.$eval(`#${fasterInventoryItemConstants.binLocation.inputId}`, (binLocationTextBox, binLocation) => {
                     binLocationTextBox.value = binLocation;
                 }, fieldsToUpdate.binLocation.slice(0, fasterInventoryItemConstants.binLocation.maxLength));
             }
             if (fieldsToUpdate.alternateLocation !== undefined) {
-                await page.$eval('#AlternateLocationRadTextBox', (alternateLocationTextBox, alternateLocation) => {
+                await page.$eval(`#${fasterInventoryItemConstants.alternateLocation.inputId}`, (alternateLocationTextBox, alternateLocation) => {
                     alternateLocationTextBox.value = alternateLocation;
                 }, fieldsToUpdate.alternateLocation.slice(0, fasterInventoryItemConstants.alternateLocation.maxLength));
             }
