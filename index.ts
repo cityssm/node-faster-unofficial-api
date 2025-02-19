@@ -1,3 +1,4 @@
+import fasterInventoryItemConstants from '@cityssm/faster-constants/inventory/items'
 import {
   FasterReportExporter,
   type FasterReportExporterOptions
@@ -90,7 +91,7 @@ export class FasterUnofficialAPI {
   }
 
   /**
-   * Updates an inventory item.
+   * Updates an inventory item, truncating fields where necessary.
    * @param itemNumber - The item number of the inventory item to update.
    * @param storeroom - The storeroom of the inventory item to update.
    * @param fieldsToUpdate - The fields to update.
@@ -113,6 +114,33 @@ export class FasterUnofficialAPI {
     if (Object.keys(fieldsToUpdate).length === 0) {
       debug('No fields to update.')
       return false
+    }
+
+    if (
+      (fieldsToUpdate.itemName ?? '').length >
+      fasterInventoryItemConstants.itemName.maxLength
+    ) {
+      debug(
+        `Item name exceeds maximum length of ${fasterInventoryItemConstants.itemName.maxLength} and will be truncated.`
+      )
+    }
+
+    if (
+      (fieldsToUpdate.binLocation ?? '').length >
+      fasterInventoryItemConstants.binLocation.maxLength
+    ) {
+      debug(
+        `Bin location exceeds maximum length of ${fasterInventoryItemConstants.binLocation.maxLength} and will be truncated.`
+      )
+    }
+
+    if (
+      (fieldsToUpdate.alternateLocation ?? '').length >
+      fasterInventoryItemConstants.alternateLocation.maxLength
+    ) {
+      debug(
+        `Alternate location exceeds maximum length of ${fasterInventoryItemConstants.alternateLocation.maxLength} and will be truncated.`
+      )
     }
 
     const { browser, page } =
@@ -198,7 +226,10 @@ export class FasterUnofficialAPI {
           (itemNameTextBox: HTMLInputElement, itemName) => {
             itemNameTextBox.value = itemName
           },
-          fieldsToUpdate.itemName
+          fieldsToUpdate.itemName.slice(
+            0,
+            fasterInventoryItemConstants.itemName.maxLength
+          )
         )
       }
 
@@ -218,7 +249,10 @@ export class FasterUnofficialAPI {
           (binLocationTextBox: HTMLInputElement, binLocation) => {
             binLocationTextBox.value = binLocation
           },
-          fieldsToUpdate.binLocation
+          fieldsToUpdate.binLocation.slice(
+            0,
+            fasterInventoryItemConstants.binLocation.maxLength
+          )
         )
       }
 
@@ -228,7 +262,10 @@ export class FasterUnofficialAPI {
           (alternateLocationTextBox: HTMLInputElement, alternateLocation) => {
             alternateLocationTextBox.value = alternateLocation
           },
-          fieldsToUpdate.alternateLocation
+          fieldsToUpdate.alternateLocation.slice(
+            0,
+            fasterInventoryItemConstants.alternateLocation.maxLength
+          )
         )
       }
 

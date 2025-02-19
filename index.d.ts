@@ -23,7 +23,7 @@ export declare class FasterUnofficialAPI {
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
     /**
-     * Updates an inventory item.
+     * Updates an inventory item, truncating fields where necessary.
      * @param itemNumber - The item number of the inventory item to update.
      * @param storeroom - The storeroom of the inventory item to update.
      * @param fieldsToUpdate - The fields to update.

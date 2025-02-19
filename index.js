@@ -1,3 +1,4 @@
+import fasterInventoryItemConstants from '@cityssm/faster-constants/inventory/items';
 import { FasterReportExporter } from '@cityssm/faster-report-exporter';
 import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
 import { minutesToMillis } from '@cityssm/to-millis';
@@ -48,7 +49,7 @@ export class FasterUnofficialAPI {
         return report.data;
     }
     /**
-     * Updates an inventory item.
+     * Updates an inventory item, truncating fields where necessary.
      * @param itemNumber - The item number of the inventory item to update.
      * @param storeroom - The storeroom of the inventory item to update.
      * @param fieldsToUpdate - The fields to update.
@@ -62,6 +63,18 @@ export class FasterUnofficialAPI {
         if (Object.keys(fieldsToUpdate).length === 0) {
             debug('No fields to update.');
             return false;
+        }
+        if ((fieldsToUpdate.itemName ?? '').length >
+            fasterInventoryItemConstants.itemName.maxLength) {
+            debug(`Item name exceeds maximum length of ${fasterInventoryItemConstants.itemName.maxLength} and will be truncated.`);
+        }
+        if ((fieldsToUpdate.binLocation ?? '').length >
+            fasterInventoryItemConstants.binLocation.maxLength) {
+            debug(`Bin location exceeds maximum length of ${fasterInventoryItemConstants.binLocation.maxLength} and will be truncated.`);
+        }
+        if ((fieldsToUpdate.alternateLocation ?? '').length >
+            fasterInventoryItemConstants.alternateLocation.maxLength) {
+            debug(`Alternate location exceeds maximum length of ${fasterInventoryItemConstants.alternateLocation.maxLength} and will be truncated.`);
         }
         const { browser, page } = await this.#fasterReportExporter._getLoggedInFasterPage();
         try {
@@ -113,7 +126,7 @@ export class FasterUnofficialAPI {
             if (fieldsToUpdate.itemName !== undefined) {
                 await page.$eval('#PartNameRadTextBox', (itemNameTextBox, itemName) => {
                     itemNameTextBox.value = itemName;
-                }, fieldsToUpdate.itemName);
+                }, fieldsToUpdate.itemName.slice(0, fasterInventoryItemConstants.itemName.maxLength));
             }
             if (fieldsToUpdate.itemDescription !== undefined) {
                 await page.$eval('#PartDescriptionRadTextBox', (itemDescriptionTextBox, itemDescription) => {
@@ -123,12 +136,12 @@ export class FasterUnofficialAPI {
             if (fieldsToUpdate.binLocation !== undefined) {
                 await page.$eval('#BinLocationRadTextBox', (binLocationTextBox, binLocation) => {
                     binLocationTextBox.value = binLocation;
-                }, fieldsToUpdate.binLocation);
+                }, fieldsToUpdate.binLocation.slice(0, fasterInventoryItemConstants.binLocation.maxLength));
             }
             if (fieldsToUpdate.alternateLocation !== undefined) {
                 await page.$eval('#AlternateLocationRadTextBox', (alternateLocationTextBox, alternateLocation) => {
                     alternateLocationTextBox.value = alternateLocation;
-                }, fieldsToUpdate.alternateLocation);
+                }, fieldsToUpdate.alternateLocation.slice(0, fasterInventoryItemConstants.alternateLocation.maxLength));
             }
             /*
              * Save the form
