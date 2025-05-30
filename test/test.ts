@@ -32,7 +32,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   )
 
-  await it.skip('Retrieves assets', async () => {
+  await it('Retrieves assets', async () => {
     try {
       const assets = await fasterApi.getAssets()
 
@@ -45,7 +45,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it.skip('Retrieves inventory', async () => {
+  await it('Retrieves inventory', async () => {
     try {
       const inventory = await fasterApi.getInventory()
 
@@ -58,7 +58,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it('Updates an inventory item', async () => {
+  await it.skip('Updates an inventory item', async () => {
     const success = await fasterApi.updateInventoryItem(
       itemNumber,
       itemStoreroom,
