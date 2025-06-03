@@ -1,6 +1,6 @@
 {
   "name": "@cityssm/faster-unofficial-api",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "An unofficial API for the FASTER Web fleet management system relying on Puppeteer scripts, exported reports, and complex parsers.",
   "keywords": [
     "faster-web",
