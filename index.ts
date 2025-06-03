@@ -181,7 +181,8 @@ export class FasterUnofficialAPI {
 
       const headingText =
         (await page.$eval(
-          '#ctl00_ContentPlaceHolder_Content_DetailMenu_PartHeaderLabel',
+          // eslint-disable-next-line no-secrets/no-secrets
+          '#RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder_Content_panetop h1',
           (heading) => heading.textContent
         )) ?? ''
 

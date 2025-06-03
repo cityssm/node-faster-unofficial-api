@@ -96,7 +96,9 @@ export class FasterUnofficialAPI {
             /*
              * Verify the storeroom
              */
-            const headingText = (await page.$eval('#ctl00_ContentPlaceHolder_Content_DetailMenu_PartHeaderLabel', (heading) => heading.textContent)) ?? '';
+            const headingText = (await page.$eval(
+            // eslint-disable-next-line no-secrets/no-secrets
+            '#RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder_Content_panetop h1', (heading) => heading.textContent)) ?? '';
             if (!headingText.trim().endsWith(`[${storeroom}]`)) {
                 debug('Item not found in the specified storeroom.');
                 return false;
