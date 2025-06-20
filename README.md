@@ -42,6 +42,8 @@ const fasterApi = new FasterUnofficialAPI(
   fasterPassword
 )
 
+const workOrder = await fasterApi.getWorkOrder(12)
+
 const assets = await fasterApi.getAssets()
 
 const inventory = await fasterApi.getInventory()
