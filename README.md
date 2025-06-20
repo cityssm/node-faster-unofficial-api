@@ -2,7 +2,6 @@
 
 [![npm (scoped)](https://img.shields.io/npm/v/%40cityssm/faster-unofficial-api)](https://www.npmjs.com/package/@cityssm/faster-unofficial-api)
 [![DeepSource](https://app.deepsource.com/gh/cityssm/node-faster-unofficial-api.svg/?label=active+issues&show_trend=true&token=aTmjAZAV2qeEg4lTqqaxNKSD)](https://app.deepsource.com/gh/cityssm/node-faster-unofficial-api/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/0d91e0c07b4647f628e6/maintainability)](https://codeclimate.com/github/cityssm/node-faster-unofficial-api/maintainability)
 
 **An _unofficial_ API for the
 [FASTER Web fleet management system](https://fasterasset.com/products/fleet-management-software/)
