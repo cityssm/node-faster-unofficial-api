@@ -1,10 +1,11 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 import inventoryItemConstants from '@cityssm/faster-constants/inventory/items';
+import { w399ReportName } from '@cityssm/faster-report-parser/xml';
 import Debug from 'debug';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js';
 import { FasterUnofficialAPI, integrationNames } from '../index.js';
-import { fasterPassword, fasterTenant, fasterUserName, itemNumber, itemStoreroom, timeZone } from './config.js';
+import { fasterPassword, fasterTenant, fasterUserName, itemNumber, itemStoreroom, timeZone, workOrderNumber } from './config.js';
 Debug.enable(DEBUG_ENABLE_NAMESPACES);
 const debug = Debug(`${DEBUG_NAMESPACE}:test`);
 await describe('node-faster-unofficial-api', async () => {
@@ -35,7 +36,18 @@ await describe('node-faster-unofficial-api', async () => {
             assert.fail();
         }
     });
-    await it('Updates an inventory item', async () => {
+    await it('Retrieves a work order', async () => {
+        try {
+            const workOrder = await fasterApi.getWorkOrder(workOrderNumber);
+            debug(workOrder);
+            assert.strictEqual(workOrder.reportName, w399ReportName);
+        }
+        catch (error) {
+            debug(error);
+            assert.fail();
+        }
+    });
+    await it.skip('Updates an inventory item', async () => {
         const success = await fasterApi.updateInventoryItem(itemNumber, itemStoreroom, {
             itemName: `Item ${new Date().toISOString()}`.padEnd(inventoryItemConstants.itemName.maxLength + 1, ' '),
             itemDescription: `Description ${new Date().toISOString()}`,

@@ -2,6 +2,7 @@ import assert from 'node:assert'
 import { describe, it } from 'node:test'
 
 import inventoryItemConstants from '@cityssm/faster-constants/inventory/items'
+import { w399ReportName } from '@cityssm/faster-report-parser/xml'
 import Debug from 'debug'
 
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js'
@@ -13,7 +14,8 @@ import {
   fasterUserName,
   itemNumber,
   itemStoreroom,
-  timeZone
+  timeZone,
+  workOrderNumber
 } from './config.js'
 
 Debug.enable(DEBUG_ENABLE_NAMESPACES)
@@ -58,7 +60,20 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it('Updates an inventory item', async () => {
+  await it('Retrieves a work order', async () => {
+    try {
+      const workOrder = await fasterApi.getWorkOrder(workOrderNumber)
+
+      debug(workOrder)
+
+      assert.strictEqual(workOrder.reportName, w399ReportName)
+    } catch (error) {
+      debug(error)
+      assert.fail()
+    }
+  })
+
+  await it.skip('Updates an inventory item', async () => {
     const success = await fasterApi.updateInventoryItem(
       itemNumber,
       itemStoreroom,

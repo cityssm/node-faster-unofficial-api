@@ -1,5 +1,5 @@
-import { FasterReportExporter, type FasterReportExporterOptions } from '@cityssm/faster-report-exporter';
-import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
+import { type FasterReportExporterOptions, FasterReportExporter } from '@cityssm/faster-report-exporter';
+import { csvReports, xlsxReports, xmlReports } from '@cityssm/faster-report-parser';
 export type FasterUnofficialAPIOptions = Omit<FasterReportExporterOptions, 'downloadFolderPath'>;
 export declare class FasterUnofficialAPI {
     #private;
@@ -22,6 +22,12 @@ export declare class FasterUnofficialAPI {
      * @returns A list of inventory items, grouped by storeroom
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
+    /**
+     * Retrieves a work order using the W399 report.
+     * @param workOrderNumber - The work order number to retrieve.
+     * @returns The work order details.
+     */
+    getWorkOrder(workOrderNumber: number): Promise<xmlReports.W399TechnicianWorkOrderXmlResults>;
     /**
      * Updates an inventory item, truncating fields where necessary.
      * @see {@link https://github.com/cityssm/node-faster-constants/blob/main/inventory/items.ts|@cityssm/faster-constants - Inventory Item Constants} for truncate lengths.

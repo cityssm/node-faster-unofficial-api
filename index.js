@@ -1,6 +1,6 @@
 import fasterInventoryItemConstants from '@cityssm/faster-constants/inventory/items';
 import { FasterReportExporter } from '@cityssm/faster-report-exporter';
-import { csvReports, xlsxReports } from '@cityssm/faster-report-parser';
+import { csvReports, xlsxReports, xmlReports } from '@cityssm/faster-report-parser';
 import { minutesToMillis } from '@cityssm/to-millis';
 import Debug from 'debug';
 import { DEBUG_NAMESPACE } from './debug.config.js';
@@ -47,6 +47,21 @@ export class FasterUnofficialAPI {
         debug(`Inventory report parsed with ${report.data.length} storeroom(s).`);
         await deleteFile(inventoryReportPath);
         return report.data;
+    }
+    /**
+     * Retrieves a work order using the W399 report.
+     * @param workOrderNumber - The work order number to retrieve.
+     * @returns The work order details.
+     */
+    async getWorkOrder(workOrderNumber) {
+        debug(`Exporting work order ${workOrderNumber}...`);
+        const workOrderPath = await this.#fasterReportExporter.exportWorkOrderTechnicianPrint(workOrderNumber, 'XML');
+        debug(`Work order exported: ${workOrderPath}`);
+        debug('Parsing work order report...');
+        const report = await xmlReports.parseW399TechnicianWorkOrder(workOrderPath);
+        debug(`Work order report parsed.`);
+        await deleteFile(workOrderPath);
+        return report;
     }
     /**
      * Updates an inventory item, truncating fields where necessary.
