@@ -30,15 +30,15 @@
   },
   "dependencies": {
     "@cityssm/faster-constants": "^0.3.1",
-    "@cityssm/faster-report-exporter": "^0.6.3",
+    "@cityssm/faster-report-exporter": "^0.7.1",
     "@cityssm/faster-report-parser": "^0.7.1",
-    "@cityssm/to-millis": "^1.0.0",
+    "@cityssm/to-millis": "^1.0.1",
     "debug": "^4.4.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.0.12",
-    "eslint-config-cityssm": "^26.0.0",
+    "@types/node": "^24.3.0",
+    "eslint-config-cityssm": "^27.1.0",
     "prettier-config-cityssm": "^1.0.0"
   }
 }
