@@ -33,12 +33,12 @@
     "@cityssm/faster-report-exporter": "^0.7.1",
     "@cityssm/faster-report-parser": "^0.7.1",
     "@cityssm/to-millis": "^1.0.1",
-    "debug": "^4.4.1"
+    "debug": "^4.4.3"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
-    "@types/node": "^24.3.0",
-    "eslint-config-cityssm": "^27.1.0",
-    "prettier-config-cityssm": "^1.0.0"
+    "@types/debug": "^4.1.13",
+    "@types/node": "^25.9.2",
+    "eslint-config-cityssm": "^41.0.0",
+    "prettier-config-cityssm": "^2.1.2"
   }
 }

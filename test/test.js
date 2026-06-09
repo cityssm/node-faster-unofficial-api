@@ -5,11 +5,11 @@ import { w399ReportName } from '@cityssm/faster-report-parser/xml';
 import Debug from 'debug';
 import { DEBUG_ENABLE_NAMESPACES, DEBUG_NAMESPACE } from '../debug.config.js';
 import { FasterUnofficialAPI, integrationNames } from '../index.js';
-import { fasterPassword, fasterTenant, fasterUserName, itemNumber, itemStoreroom, timeZone, workOrderNumber } from './config.js';
+import { fasterPassword, fasterTenant, fasterUsername, itemNumber, itemStoreroom, timeZone, workOrderNumber } from './config.js';
 Debug.enable(DEBUG_ENABLE_NAMESPACES);
 const debug = Debug(`${DEBUG_NAMESPACE}:test`);
 await describe('node-faster-unofficial-api', async () => {
-    const fasterApi = new FasterUnofficialAPI(fasterTenant, fasterUserName, fasterPassword, {
+    const fasterApi = new FasterUnofficialAPI(fasterTenant, fasterUsername, fasterPassword, {
         timeoutMillis: 90_000,
         showBrowserWindow: true,
         timeZone
@@ -36,7 +36,7 @@ await describe('node-faster-unofficial-api', async () => {
             assert.fail();
         }
     });
-    await it('Retrieves a work order', async () => {
+    await it.skip('Retrieves a work order', async () => {
         try {
             const workOrder = await fasterApi.getWorkOrder(workOrderNumber);
             debug(workOrder);
@@ -56,7 +56,7 @@ await describe('node-faster-unofficial-api', async () => {
         });
         assert.ok(success);
     });
-    await it.skip('Retrieves message logs', async () => {
+    await it('Retrieves message logs', async () => {
         try {
             const log = await fasterApi.getMessageLog(new Date());
             debug(log);
@@ -67,7 +67,7 @@ await describe('node-faster-unofficial-api', async () => {
             assert.fail();
         }
     });
-    await it.skip('Executes an integration', async () => {
+    await it('Executes an integration', async () => {
         const success = await fasterApi.executeIntegration(integrationNames.inventoryImportUtility);
         assert.ok(success);
     });

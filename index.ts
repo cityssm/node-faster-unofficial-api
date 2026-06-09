@@ -3,7 +3,11 @@ import {
   type FasterReportExporterOptions,
   FasterReportExporter
 } from '@cityssm/faster-report-exporter'
-import { csvReports, xlsxReports, xmlReports } from '@cityssm/faster-report-parser'
+import {
+  csvReports,
+  xlsxReports,
+  xmlReports
+} from '@cityssm/faster-report-parser'
 import { minutesToMillis } from '@cityssm/to-millis'
 import Debug from 'debug'
 
@@ -95,12 +99,16 @@ export class FasterUnofficialAPI {
    * @param workOrderNumber - The work order number to retrieve.
    * @returns The work order details.
    */
-  async getWorkOrder(workOrderNumber: number): Promise<xmlReports.W399TechnicianWorkOrderXmlResults> {
-
+  async getWorkOrder(
+    workOrderNumber: number
+  ): Promise<xmlReports.W399TechnicianWorkOrderXmlResults> {
     debug(`Exporting work order ${workOrderNumber}...`)
 
     const workOrderPath =
-      await this.#fasterReportExporter.exportWorkOrderTechnicianPrint(workOrderNumber, 'XML')
+      await this.#fasterReportExporter.exportWorkOrderTechnicianPrint(
+        workOrderNumber,
+        'XML'
+      )
 
     debug(`Work order exported: ${workOrderPath}`)
 
@@ -108,9 +116,7 @@ export class FasterUnofficialAPI {
 
     const report = await xmlReports.parseW399TechnicianWorkOrder(workOrderPath)
 
-    debug(
-      `Work order report parsed.`
-    )
+    debug(`Work order report parsed.`)
 
     await deleteFile(workOrderPath)
 
@@ -252,8 +258,8 @@ export class FasterUnofficialAPI {
       if (fieldsToUpdate.itemName !== undefined) {
         await page.$eval(
           `#${fasterInventoryItemConstants.itemName.inputId}`,
-          (itemNameTextBox: HTMLInputElement, itemName) => {
-            itemNameTextBox.value = itemName
+          (itemNameTextBox, itemName) => {
+            ;(itemNameTextBox as HTMLInputElement).value = itemName
           },
           fieldsToUpdate.itemName.slice(
             0,
@@ -265,8 +271,9 @@ export class FasterUnofficialAPI {
       if (fieldsToUpdate.itemDescription !== undefined) {
         await page.$eval(
           '#PartDescriptionRadTextBox',
-          (itemDescriptionTextBox: HTMLTextAreaElement, itemDescription) => {
-            itemDescriptionTextBox.value = itemDescription
+          (itemDescriptionTextBox, itemDescription) => {
+            ;(itemDescriptionTextBox as HTMLTextAreaElement).value =
+              itemDescription
           },
           fieldsToUpdate.itemDescription
         )
@@ -275,8 +282,8 @@ export class FasterUnofficialAPI {
       if (fieldsToUpdate.binLocation !== undefined) {
         await page.$eval(
           `#${fasterInventoryItemConstants.binLocation.inputId}`,
-          (binLocationTextBox: HTMLInputElement, binLocation) => {
-            binLocationTextBox.value = binLocation
+          (binLocationTextBox, binLocation) => {
+            ;(binLocationTextBox as HTMLInputElement).value = binLocation
           },
           fieldsToUpdate.binLocation.slice(
             0,
@@ -288,8 +295,9 @@ export class FasterUnofficialAPI {
       if (fieldsToUpdate.alternateLocation !== undefined) {
         await page.$eval(
           `#${fasterInventoryItemConstants.alternateLocation.inputId}`,
-          (alternateLocationTextBox: HTMLInputElement, alternateLocation) => {
-            alternateLocationTextBox.value = alternateLocation
+          (alternateLocationTextBox, alternateLocation) => {
+            ;(alternateLocationTextBox as HTMLInputElement).value =
+              alternateLocation
           },
           fieldsToUpdate.alternateLocation.slice(
             0,
@@ -302,8 +310,8 @@ export class FasterUnofficialAPI {
        * Save the form
        */
 
-      await page.$eval('#SaveTopButton', (saveButton: HTMLButtonElement) => {
-        saveButton.click()
+      await page.$eval('#SaveTopButton', (saveButton) => {
+        ;(saveButton as HTMLButtonElement).click()
       })
 
       await delay()

@@ -143,28 +143,35 @@ export class FasterUnofficialAPI {
              */
             if (fieldsToUpdate.itemName !== undefined) {
                 await page.$eval(`#${fasterInventoryItemConstants.itemName.inputId}`, (itemNameTextBox, itemName) => {
+                    ;
                     itemNameTextBox.value = itemName;
                 }, fieldsToUpdate.itemName.slice(0, fasterInventoryItemConstants.itemName.maxLength));
             }
             if (fieldsToUpdate.itemDescription !== undefined) {
                 await page.$eval('#PartDescriptionRadTextBox', (itemDescriptionTextBox, itemDescription) => {
-                    itemDescriptionTextBox.value = itemDescription;
+                    ;
+                    itemDescriptionTextBox.value =
+                        itemDescription;
                 }, fieldsToUpdate.itemDescription);
             }
             if (fieldsToUpdate.binLocation !== undefined) {
                 await page.$eval(`#${fasterInventoryItemConstants.binLocation.inputId}`, (binLocationTextBox, binLocation) => {
+                    ;
                     binLocationTextBox.value = binLocation;
                 }, fieldsToUpdate.binLocation.slice(0, fasterInventoryItemConstants.binLocation.maxLength));
             }
             if (fieldsToUpdate.alternateLocation !== undefined) {
                 await page.$eval(`#${fasterInventoryItemConstants.alternateLocation.inputId}`, (alternateLocationTextBox, alternateLocation) => {
-                    alternateLocationTextBox.value = alternateLocation;
+                    ;
+                    alternateLocationTextBox.value =
+                        alternateLocation;
                 }, fieldsToUpdate.alternateLocation.slice(0, fasterInventoryItemConstants.alternateLocation.maxLength));
             }
             /*
              * Save the form
              */
             await page.$eval('#SaveTopButton', (saveButton) => {
+                ;
                 saveButton.click();
             });
             await delay();
