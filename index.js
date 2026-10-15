@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import fasterInventoryItemConstants from '@cityssm/faster-constants/inventory/items';
 import { FasterReportExporter } from '@cityssm/faster-report-exporter';
 import { csvReports, xlsxReports, xmlReports } from '@cityssm/faster-report-parser';
@@ -35,29 +36,28 @@ export class FasterUnofficialAPI {
                 timeout: timeoutMillis
             });
             // Find the integration row
-            const integrationTableRowElements = await page.$$(
-            // eslint-disable-next-line no-secrets/no-secrets
-            '#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr');
+            const integrationTableRowElements = await page.$$('#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr');
             for (const integrationTableRowElement of integrationTableRowElements) {
                 const integrationNameElement = await integrationTableRowElement.$('td:nth-child(1) a');
                 if (integrationNameElement === null) {
                     continue;
                 }
                 const integrationNameText = await integrationNameElement.evaluate((cell) => cell.textContent);
-                if (integrationNameText === integrationName) {
-                    debug(`Integration found: ${integrationName}`);
-                    const integrationActionLinkElements = await integrationTableRowElement.$$('td:nth-child(3) a');
-                    for (const integrationActionLinkElement of integrationActionLinkElements) {
-                        const integrationActionLinkText = await integrationActionLinkElement.evaluate((cell) => cell.textContent);
-                        if (integrationActionLinkText === 'Execute') {
-                            debug(`Executing integration: ${integrationName}`);
-                            await integrationActionLinkElement.click();
-                            await delay();
-                            await page.waitForNetworkIdle({
-                                timeout: timeoutMillis
-                            });
-                            return true;
-                        }
+                if (integrationNameText !== integrationName) {
+                    continue;
+                }
+                debug(`Integration found: ${integrationName}`);
+                const integrationActionLinkElements = await integrationTableRowElement.$$('td:nth-child(3) a');
+                for (const integrationActionLinkElement of integrationActionLinkElements) {
+                    const integrationActionLinkText = await integrationActionLinkElement.evaluate((cell) => cell.textContent);
+                    if (integrationActionLinkText === 'Execute') {
+                        debug(`Executing integration: ${integrationName}`);
+                        await integrationActionLinkElement.click();
+                        await delay();
+                        await page.waitForNetworkIdle({
+                            timeout: timeoutMillis
+                        });
+                        return true;
                     }
                 }
             }
@@ -106,9 +106,9 @@ export class FasterUnofficialAPI {
      * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
      * @returns The message log.
      */
-    async getMessageLog(startDate, endDate) {
+    async getMessageLog(startDate, endDate = startDate) {
         debug('Exporting message log...');
-        const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(startDate, endDate ?? startDate, 'CSV');
+        const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(startDate, endDate, 'CSV');
         debug(`Message log exported: ${messageLogPath}`);
         debug('Parsing message log...');
         const report = await csvReports.parseFasterCsvReport(messageLogPath, csvReports.fasterCsvReportOptions.w603);
@@ -179,9 +179,7 @@ export class FasterUnofficialAPI {
             /*
              * Verify the storeroom
              */
-            const headingText = (await page.$eval(
-            // eslint-disable-next-line no-secrets/no-secrets
-            '#RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder_Content_panetop h1', (heading) => heading.textContent)) ?? '';
+            const headingText = (await page.$eval('#RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder_Content_panetop h1', (heading) => heading.textContent)) ?? '';
             if (!headingText.trim().endsWith(`[${storeroom}]`)) {
                 debug('Item not found in the specified storeroom.');
                 return false;

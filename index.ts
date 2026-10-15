@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import fasterInventoryItemConstants from '@cityssm/faster-constants/inventory/items'
 import {
   type FasterReportExporterOptions,
@@ -72,7 +73,6 @@ export class FasterUnofficialAPI {
       // Find the integration row
 
       const integrationTableRowElements = await page.$$(
-        // eslint-disable-next-line no-secrets/no-secrets
         '#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr'
       )
 
@@ -88,31 +88,33 @@ export class FasterUnofficialAPI {
           (cell) => cell.textContent
         )
 
-        if (integrationNameText === integrationName) {
-          debug(`Integration found: ${integrationName}`)
+        if (integrationNameText !== integrationName) {
+          continue
+        }
 
-          const integrationActionLinkElements =
-            await integrationTableRowElement.$$('td:nth-child(3) a')
+        debug(`Integration found: ${integrationName}`)
 
-          for (const integrationActionLinkElement of integrationActionLinkElements) {
-            const integrationActionLinkText =
-              await integrationActionLinkElement.evaluate(
-                (cell) => cell.textContent
-              )
+        const integrationActionLinkElements =
+          await integrationTableRowElement.$$('td:nth-child(3) a')
 
-            if (integrationActionLinkText === 'Execute') {
-              debug(`Executing integration: ${integrationName}`)
+        for (const integrationActionLinkElement of integrationActionLinkElements) {
+          const integrationActionLinkText =
+            await integrationActionLinkElement.evaluate(
+              (cell) => cell.textContent
+            )
 
-              await integrationActionLinkElement.click()
+          if (integrationActionLinkText === 'Execute') {
+            debug(`Executing integration: ${integrationName}`)
 
-              await delay()
+            await integrationActionLinkElement.click()
 
-              await page.waitForNetworkIdle({
-                timeout: timeoutMillis
-              })
+            await delay()
 
-              return true
-            }
+            await page.waitForNetworkIdle({
+              timeout: timeoutMillis
+            })
+
+            return true
           }
         }
       }
@@ -181,13 +183,13 @@ export class FasterUnofficialAPI {
    */
   async getMessageLog(
     startDate: Date,
-    endDate?: Date
+    endDate: Date = startDate
   ): Promise<csvReports.W603ReportRow[]> {
     debug('Exporting message log...')
 
     const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(
       startDate,
-      endDate ?? startDate,
+      endDate,
       'CSV'
     )
 
@@ -327,7 +329,6 @@ export class FasterUnofficialAPI {
 
       const headingText =
         (await page.$eval(
-          // eslint-disable-next-line no-secrets/no-secrets
           '#RAD_SPLITTER_PANE_CONTENT_ctl00_ContentPlaceHolder_Content_panetop h1',
           (heading) => heading.textContent
         )) ?? ''
