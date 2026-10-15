@@ -37,7 +37,7 @@ import { FasterUnofficialAPI } from '@cityssm/faster-unofficial-api'
 
 const fasterApi = new FasterUnofficialAPI(
   fasterTenant,
-  fasterUserName,
+  fasterUsername,
   fasterPassword
 )
 

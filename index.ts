@@ -30,22 +30,101 @@ export class FasterUnofficialAPI {
    * Initialize the Faster Unofficial API
    * @param fasterTenantOrBaseUrl - The subdomain of the FASTER Web URL before ".fasterwebcloud.com"
    *                                or the full domain and path including "/FASTER"
-   * @param fasterUserName - The username to log in with
+   * @param fasterUsername - The username to log in with
    * @param fasterPassword - The password to log in with
    * @param options - Options
    */
   constructor(
     fasterTenantOrBaseUrl: string,
-    fasterUserName: string,
+    fasterUsername: string,
     fasterPassword: string,
     options: Partial<FasterUnofficialAPIOptions> = {}
   ) {
     this.#fasterReportExporter = new FasterReportExporter(
       fasterTenantOrBaseUrl,
-      fasterUserName,
+      fasterUsername,
       fasterPassword,
       options
     )
+  }
+
+  /**
+   * Executes an integration by name.
+   * @param integrationName - The name of the integration to execute.
+   * @returns `true` if the integration was executed, `false` if not.
+   */
+  async executeIntegration(integrationName: string): Promise<boolean> {
+    const { browser, page } =
+      await this.#fasterReportExporter._getLoggedInFasterPage()
+
+    try {
+      await page.goto(
+        this.#fasterReportExporter.fasterUrlBuilder.integrationsUrl,
+        {
+          timeout: timeoutMillis
+        }
+      )
+
+      await page.waitForNetworkIdle({
+        timeout: timeoutMillis
+      })
+
+      // Find the integration row
+
+      const integrationTableRowElements = await page.$$(
+        // eslint-disable-next-line no-secrets/no-secrets
+        '#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr'
+      )
+
+      for (const integrationTableRowElement of integrationTableRowElements) {
+        const integrationNameElement =
+          await integrationTableRowElement.$('td:nth-child(1) a')
+
+        if (integrationNameElement === null) {
+          continue
+        }
+
+        const integrationNameText = await integrationNameElement.evaluate(
+          (cell) => cell.textContent
+        )
+
+        if (integrationNameText === integrationName) {
+          debug(`Integration found: ${integrationName}`)
+
+          const integrationActionLinkElements =
+            await integrationTableRowElement.$$('td:nth-child(3) a')
+
+          for (const integrationActionLinkElement of integrationActionLinkElements) {
+            const integrationActionLinkText =
+              await integrationActionLinkElement.evaluate(
+                (cell) => cell.textContent
+              )
+
+            if (integrationActionLinkText === 'Execute') {
+              debug(`Executing integration: ${integrationName}`)
+
+              await integrationActionLinkElement.click()
+
+              await delay()
+
+              await page.waitForNetworkIdle({
+                timeout: timeoutMillis
+              })
+
+              return true
+            }
+          }
+        }
+      }
+    } finally {
+      try {
+        await browser.close()
+      } catch {
+        // Ignore errors
+      }
+    }
+
+    return false
   }
 
   /**
@@ -90,6 +169,40 @@ export class FasterUnofficialAPI {
     debug(`Inventory report parsed with ${report.data.length} storeroom(s).`)
 
     await deleteFile(inventoryReportPath)
+
+    return report.data
+  }
+
+  /**
+   * Retrieves the message log using the W603 report.
+   * @param startDate - The start date of the message log to retrieve.
+   * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
+   * @returns The message log.
+   */
+  async getMessageLog(
+    startDate: Date,
+    endDate?: Date
+  ): Promise<csvReports.W603ReportRow[]> {
+    debug('Exporting message log...')
+
+    const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(
+      startDate,
+      endDate ?? startDate,
+      'CSV'
+    )
+
+    debug(`Message log exported: ${messageLogPath}`)
+
+    debug('Parsing message log...')
+
+    const report = await csvReports.parseFasterCsvReport(
+      messageLogPath,
+      csvReports.fasterCsvReportOptions.w603
+    )
+
+    debug(`Message log parsed with ${report.data.length} message(s).`)
+
+    await deleteFile(messageLogPath)
 
     return report.data
   }
@@ -328,119 +441,6 @@ export class FasterUnofficialAPI {
         // Ignore errors
       }
     }
-  }
-
-  /**
-   * Retrieves the message log using the W603 report.
-   * @param startDate - The start date of the message log to retrieve.
-   * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
-   * @returns The message log.
-   */
-  async getMessageLog(
-    startDate: Date,
-    endDate?: Date
-  ): Promise<csvReports.W603ReportRow[]> {
-    debug('Exporting message log...')
-
-    const messageLogPath = await this.#fasterReportExporter.exportMessageLogger(
-      startDate,
-      endDate ?? startDate,
-      'CSV'
-    )
-
-    debug(`Message log exported: ${messageLogPath}`)
-
-    debug('Parsing message log...')
-
-    const report = await csvReports.parseFasterCsvReport(
-      messageLogPath,
-      csvReports.fasterCsvReportOptions.w603
-    )
-
-    debug(`Message log parsed with ${report.data.length} message(s).`)
-
-    await deleteFile(messageLogPath)
-
-    return report.data
-  }
-
-  /**
-   * Executes an integration by name.
-   * @param integrationName - The name of the integration to execute.
-   * @returns `true` if the integration was executed, `false` if not.
-   */
-  async executeIntegration(integrationName: string): Promise<boolean> {
-    const { browser, page } =
-      await this.#fasterReportExporter._getLoggedInFasterPage()
-
-    try {
-      await page.goto(
-        this.#fasterReportExporter.fasterUrlBuilder.integrationsUrl,
-        {
-          timeout: timeoutMillis
-        }
-      )
-
-      await page.waitForNetworkIdle({
-        timeout: timeoutMillis
-      })
-
-      // Find the integration row
-
-      const integrationTableRowElements = await page.$$(
-        // eslint-disable-next-line no-secrets/no-secrets
-        '#ctl00_ContentPlaceHolder_Content_IntegrationRadDock_C_IntegrationRadGrid_ctl00 tbody tr'
-      )
-
-      for (const integrationTableRowElement of integrationTableRowElements) {
-        const integrationNameElement =
-          await integrationTableRowElement.$('td:nth-child(1) a')
-
-        if (integrationNameElement === null) {
-          continue
-        }
-
-        const integrationNameText = await integrationNameElement.evaluate(
-          (cell) => cell.textContent
-        )
-
-        if (integrationNameText === integrationName) {
-          debug(`Integration found: ${integrationName}`)
-
-          const integrationActionLinkElements =
-            await integrationTableRowElement.$$('td:nth-child(3) a')
-
-          for (const integrationActionLinkElement of integrationActionLinkElements) {
-            const integrationActionLinkText =
-              await integrationActionLinkElement.evaluate(
-                (cell) => cell.textContent
-              )
-
-            if (integrationActionLinkText === 'Execute') {
-              debug(`Executing integration: ${integrationName}`)
-
-              await integrationActionLinkElement.click()
-
-              await delay()
-
-              await page.waitForNetworkIdle({
-                timeout: timeoutMillis
-              })
-
-              return true
-            }
-          }
-        }
-      }
-    } finally {
-      try {
-        await browser.close()
-      } catch {
-        // Ignore errors
-      }
-    }
-
-    return false
   }
 }
 

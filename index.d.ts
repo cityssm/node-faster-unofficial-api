@@ -7,11 +7,17 @@ export declare class FasterUnofficialAPI {
      * Initialize the Faster Unofficial API
      * @param fasterTenantOrBaseUrl - The subdomain of the FASTER Web URL before ".fasterwebcloud.com"
      *                                or the full domain and path including "/FASTER"
-     * @param fasterUserName - The username to log in with
+     * @param fasterUsername - The username to log in with
      * @param fasterPassword - The password to log in with
      * @param options - Options
      */
-    constructor(fasterTenantOrBaseUrl: string, fasterUserName: string, fasterPassword: string, options?: Partial<FasterUnofficialAPIOptions>);
+    constructor(fasterTenantOrBaseUrl: string, fasterUsername: string, fasterPassword: string, options?: Partial<FasterUnofficialAPIOptions>);
+    /**
+     * Executes an integration by name.
+     * @param integrationName - The name of the integration to execute.
+     * @returns `true` if the integration was executed, `false` if not.
+     */
+    executeIntegration(integrationName: string): Promise<boolean>;
     /**
      * Retrieves a list of assets using the W114 report.
      * @returns A list of assets
@@ -22,6 +28,13 @@ export declare class FasterUnofficialAPI {
      * @returns A list of inventory items, grouped by storeroom
      */
     getInventory(): Promise<xlsxReports.W200StoreroomReportData[]>;
+    /**
+     * Retrieves the message log using the W603 report.
+     * @param startDate - The start date of the message log to retrieve.
+     * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
+     * @returns The message log.
+     */
+    getMessageLog(startDate: Date, endDate?: Date): Promise<csvReports.W603ReportRow[]>;
     /**
      * Retrieves a work order using the W399 report.
      * @param workOrderNumber - The work order number to retrieve.
@@ -46,19 +59,6 @@ export declare class FasterUnofficialAPI {
         binLocation?: string;
         alternateLocation?: string;
     }): Promise<boolean>;
-    /**
-     * Retrieves the message log using the W603 report.
-     * @param startDate - The start date of the message log to retrieve.
-     * @param endDate - The end date of the message log to retrieve. Defaults to `startDate`.
-     * @returns The message log.
-     */
-    getMessageLog(startDate: Date, endDate?: Date): Promise<csvReports.W603ReportRow[]>;
-    /**
-     * Executes an integration by name.
-     * @param integrationName - The name of the integration to execute.
-     * @returns `true` if the integration was executed, `false` if not.
-     */
-    executeIntegration(integrationName: string): Promise<boolean>;
 }
 export declare const integrationNames: {
     inventoryImportUtility: string;

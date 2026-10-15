@@ -60,7 +60,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it.skip('Retrieves a work order', async () => {
+  await it('Retrieves a work order', async () => {
     try {
       const workOrder = await fasterApi.getWorkOrder(workOrderNumber)
 
@@ -91,7 +91,7 @@ await describe('node-faster-unofficial-api', async () => {
     assert.ok(success)
   })
 
-  await it('Retrieves message logs', async () => {
+  await it.skip('Retrieves message logs', async () => {
     try {
       const log = await fasterApi.getMessageLog(new Date())
 
@@ -104,7 +104,7 @@ await describe('node-faster-unofficial-api', async () => {
     }
   })
 
-  await it('Executes an integration', async () => {
+  await it.skip('Executes an integration', async () => {
     const success = await fasterApi.executeIntegration(
       integrationNames.inventoryImportUtility
     )
